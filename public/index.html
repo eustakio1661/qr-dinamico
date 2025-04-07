@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador QR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+    }
+    #qr {
+      width: 90%;
+      max-width: 300px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>QR Dinámico</h1>
+  <p>Se actualiza cada 10 segundos</p>
+  <img id="qr" src="" alt="QR Generado">
+  <script>
+    async function actualizarQR() {
+      try {
+        const response = await fetch('/generate');
+        const data = await response.json();
+        document.getElementById('qr').src = data.qr;
+      } catch (err) {
+        console.error('Error cargando el QR', err);
+      }
+    }
+
+    actualizarQR(); // Primera vez
+    // setInterval(actualizarQR, 60 * 1000); // Cada minuto
+    setInterval(actualizarQR, 10 * 1000); // Cada 10 segundos
+</script>
+</body>
+</html>
